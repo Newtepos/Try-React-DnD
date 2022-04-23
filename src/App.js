@@ -3,6 +3,8 @@ import "./App.css";
 import { useState } from "react";
 import Todo from "./component/Todo";
 import { useDrop } from "react-dnd";
+import Todos from "./component/Todos";
+import CompleteTodos from "./component/CompleteTodos";
 
 function App() {
   const [todos, setTodos] = useState([
@@ -14,42 +16,22 @@ function App() {
   const setTodoDone = (id) => {
     const todo = todos.filter((todos) => (todos._id == id));
     todo[0].isDone = true;
-    console.log(todos);
+    setTodos([...todos, todo]);
+    // console.log(todos);
   }
 
-  const [{ isOver }, drop] = useDrop(() => ({
-    accept: "card",
-    drop: (item, monitor) => {
-      // console.log(item.id);
-      setTodoDone(item.id);
-    },
-    collect: (monitor) => ({
-      isOver: !!monitor.isOver(),
-    }),
-  }));
+  const setTodoFalse = (id) => {
+    const todo = todos.filter((todos) => (todos._id == id));
+    todo[0].isDone = false;
+    setTodos([...todos, todo]);
+  }
 
   return (
     <div className="bg-gray-800 text-white h-screen flex justify-top flex-col items-center">
       <h1 className="font-bold text-3xl mt-5">{`Drag & Drop`}</h1>
       <div className="drag__container flex flex-row h-full mt-5 p-5 gap-5">
-        <ul className="bg-gray-600 w-80 text-center rounded-lg flex flex-col items-center p-3">
-          {todos
-            .filter((todos) => todos.isDone == false)
-            .map((item) => (
-              <Todo key={item._id} todo={item.todo} id={item._id}></Todo>
-            ))}
-        </ul>
-        <ul
-          ref={drop}
-          className="bg-gray-600 w-80 text-center rounded-lg flex flex-col items-center p-3"
-          style={{ opacity: isOver ? `0.5` : `1` }}
-        >
-          {todos
-            .filter((todos) => todos.isDone == true)
-            .map((item) => (
-              <Todo key={item._id} todo={item.todo} id={item._id}></Todo>
-            ))}
-        </ul>
+        <Todos todos={todos} setTodoFalse={setTodoFalse}></Todos>
+        <CompleteTodos todos={todos} setTodoDone={setTodoDone}></CompleteTodos>
       </div>
     </div>
   );
