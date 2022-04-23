@@ -7,9 +7,7 @@ const CompleteTodos = (props) => {
     const [{ isOver }, drop] = useDrop(() => ({
         accept: "card",
         drop: (item, monitor) => {
-          // console.log(item.id);
           props.setTodoDone(item.id);
-          console.log(props.todos);
         },
         collect: (monitor) => ({
           isOver: !!monitor.isOver(),

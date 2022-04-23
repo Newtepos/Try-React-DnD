@@ -16,14 +16,16 @@ function App() {
   const setTodoDone = (id) => {
     const todo = todos.filter((todos) => (todos._id == id));
     todo[0].isDone = true;
-    setTodos([...todos, todo]);
-    // console.log(todos);
+    const DoneTodos = todos.filter((todos) => (todos._id != id));
+    setTodos([...todo, ...DoneTodos]);
+    console.log(todos);
   }
 
   const setTodoFalse = (id) => {
     const todo = todos.filter((todos) => (todos._id == id));
     todo[0].isDone = false;
-    setTodos([...todos, todo]);
+    const DoneTodos = todos.filter((todos) => (todos._id != id));
+    setTodos([...todo, ...DoneTodos]);
   }
 
   return (
